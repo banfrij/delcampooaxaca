@@ -1,0 +1,28 @@
+{
+    "products": [
+        {
+            "id": 1,
+            "name": "Manzana",
+            "description": "Fruta fresca y jugosa",
+            "unitSale": "kg"
+        },
+        {
+            "id": 2,
+            "name": "Zanahoria",
+            "description": "Verdura crujiente y nutritiva",
+            "unitSale": "kg"
+        },
+        {
+            "id": 3,
+            "name": "Plátano",
+            "description": "Fruta dulce y energética",
+            "unitSale": "kg"
+        },
+        {
+            "id": 4,
+            "name": "Lechuga",
+            "description": "Verdura de hojas verdes y crujientes",
+            "unitSale": "kg"
+        }
+    ]
+}
