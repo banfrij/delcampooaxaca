@@ -43,7 +43,7 @@ export default function Main() {
             <div>
               <h3>{product.name}</h3>
               <p>{product.description}</p>
-              <p>Price: ${product.price} per {product.unit}</p>
+              <p>Precio: ${product.price} por {product.unit}</p>
               <button onClick={() => handleAddToCart(product)}>Agregar al carrito</button>
             </div>
           </div>
