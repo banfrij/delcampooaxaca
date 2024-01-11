@@ -2,7 +2,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import { RadioGroup, FormControlLabel, Radio } from '@material-ui/core';
 
 const ProfileContainer = styled.div`
   display: flex;
@@ -41,6 +40,21 @@ const Section = styled.div`
   border-radius: 10px;
   padding: 10px;
 `;
+const StyledRadioGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin: 20px 0;
+`;
+
+const StyledFormControlLabel = styled.label`
+  display: flex;
+  align-items: center;
+  margin: 5px 0;
+`;
+
+const StyledRadio = styled.input.attrs({ type: 'radio' })`
+  margin-right: 10px;
+`;
 
 function Profile() {
   const position = [51.505, -0.09]; // Puedes reemplazar esto con la ubicación del usuario
@@ -55,12 +69,24 @@ function Profile() {
       <InfoSection>
       <Section>
           <SectionTitle>Forma de Pago</SectionTitle>
-          <RadioGroup value={paymentMethod} onChange={handlePaymentMethodChange}>
-            <FormControlLabel value="creditCard" control={<Radio />} label="Tarjeta de crédito o débito" />
-            <FormControlLabel value="cash" control={<Radio />} label="Efectivo" />
-            <FormControlLabel value="cryptocurrency" control={<Radio />} label="Criptomoneda" />
-            <FormControlLabel value="paypal" control={<Radio />} label="PayPal" />
-          </RadioGroup>
+          <StyledRadioGroup onChange={handlePaymentMethodChange}>
+  <StyledFormControlLabel>
+    <StyledRadio value="creditCard" name="paymentMethod" />
+    Tarjeta de crédito o débito
+  </StyledFormControlLabel>
+  <StyledFormControlLabel>
+    <StyledRadio value="cash" name="paymentMethod" />
+    Efectivo
+  </StyledFormControlLabel>
+  <StyledFormControlLabel>
+    <StyledRadio value="cryptocurrency" name="paymentMethod" />
+    Criptomoneda
+  </StyledFormControlLabel>
+  <StyledFormControlLabel>
+    <StyledRadio value="paypal" name="paymentMethod" />
+    PayPal
+  </StyledFormControlLabel>
+</StyledRadioGroup>
         </Section>
         <Section>
           <SectionTitle>Historial de Pedidos</SectionTitle>
