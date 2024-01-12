@@ -1,28 +1,34 @@
 import React from 'react';
+import { createRoot } from 'react-dom';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import {store} from './redux/store.js'
+import { UserContextProvider } from './screens/Login/UserContext';
+import App from './App';
+import Main from './screens/Main/Main';
+import Order from './screens/Order/Order';
+import Profile from './screens/Profile/Profile';
+import Login from './screens/Login/Login';
 
-import App from './App.jsx';
-import Main from './screens/Main/Main.jsx';
-import Order from './screens/Order/Order.jsx';
-import Profile from './screens/Profile/Profile.jsx';
-import Login from './screens/Login/Login.jsx';
-import { createRoot } from 'react-dom/client';
-import './index.css'; 
+import './index.css';
 
-createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-  <Provider store={store}>
-      <Router>
-        <Routes>
-          <Route  path="/app" element={<App/>} />
-          <Route path="/main" element={<Main/>} />
-          <Route path="/order" element={<Order/>} />
-          <Route path="/profile" element={<Profile/>} />
-          <Route path="/" element={<Login/>} />
-        </Routes>
-      </Router>
- </Provider>
-  </React.StrictMode>,
-);
+const RootComponent = () => {
+  return (
+    <React.StrictMode>
+    
+        <UserContextProvider>
+          <Router>
+            <Routes>
+              <Route path="/app" element={<App />} />
+              <Route path="/main" element={<Main />} />
+              <Route path="/order" element={<Order />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/login" element={<Login />} />
+            </Routes>
+          </Router>
+        </UserContextProvider>
+
+    </React.StrictMode>
+  );
+};
+
+createRoot(document.getElementById('root')).render(<RootComponent />);

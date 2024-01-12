@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import { UserContext } from './UserContext';
 
 const Container = styled.div`
   display: flex;
@@ -54,24 +55,23 @@ const Button = styled.button`
 function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [user, setUser] = useState(null); // Nuevo estado para el usuario
-
+ 
+  const { login } = useContext(UserContext); // Solo accede a login del UserContext
   const navigate = useNavigate();
 
   const handleLogin = (e) => {
     e.preventDefault();
     if (
       (username === 'user1' && password === '123') ||
-      (username === 'admin' && password === '123') ||
-      (username === 'user2' && password === '123')
+      (username === 'admin' && password === '123')
     ) {
-      setUser(username); // Guarda el usuario en el estado
+      const user = { username, role: username === 'admin' ? 'admin' : 'user' }
+      login(user); // Llama a la función login del UserContext
       navigate('/app');
     } else {
       alert('Invalid username or password');
     }
   };
-
   return (
     <Container>
       <LeftSection>

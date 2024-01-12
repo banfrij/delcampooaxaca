@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react'; // Importa useEffect
 import styled from 'styled-components';
 import Main from './screens/Main/Main';
 import Order from './screens/Order/Order';
 import Profile from './screens/Profile/Profile';
 
+
 import {CartContext} from './screens/Order/CartContext'
+import { UserContext } from './screens/Login/UserContext';
+import { useNavigate } from 'react-router-dom'; // Importa useNavigate
+
 
 
 const Body = styled.div`
@@ -42,29 +46,44 @@ const NavButton = styled.button`
 
 const App = () => {
   const [selectedScreen, setSelectedScreen] = useState('main');
-  const [cartItems, setCartItems] = useState([]); // Nuevo estado para los items del carrito
+  const [cartItems, setCartItems] = useState([]);
+  const { user, login } = useContext(UserContext); // Usa login en lugar de setUser
+  const navigate = useNavigate();
 
+  useEffect(() => {
+    console.log(`Usuario conectado: ${user ? user.name : 'Ninguno'}`);
+  }, [user]);
 
   const handleNavButtonClick = (screen) => {
     setSelectedScreen(screen);
   };
 
+  const handleLogout = () => {
+    login(null); // Usa login para manejar el cierre de sesión
+    navigate('/login');
+  };
+
   return (
+<UserContext.Provider value={{ user, login }}>
     <CartContext.Provider value={{ cartItems, setCartItems }}> {/* Proveer el contexto del carrito */}
     <Body>
       <Navbar>
         <NavButton onClick={() => handleNavButtonClick('main')}>Main</NavButton>
         <NavButton onClick={() => handleNavButtonClick('order')}>Order</NavButton>
         <NavButton onClick={() => handleNavButtonClick('profile')}>Profile</NavButton>
+        <button onClick={handleLogout}>Salir</button> {/* Este es el botón que limpia el estado del usuario y redirige a Login */}
+      
       </Navbar>
 
       <Container>
         {selectedScreen === 'main' && <Main />}
         {selectedScreen === 'order' && <Order />}
         {selectedScreen === 'profile' && <Profile />}
+        
       </Container>
     </Body>
   </CartContext.Provider>
+</UserContext.Provider>
   );
 };
 
