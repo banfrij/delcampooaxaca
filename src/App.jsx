@@ -18,7 +18,9 @@ const Body = styled.div`
   min-height: 97vh;
 `;
 const Container = styled.div`
-  background-color: #fff;
+background: #ECF0F1;
+  
+padding: 20px;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -49,6 +51,7 @@ const App = () => {
   const [cartItems, setCartItems] = useState([]);
   const { user, login } = useContext(UserContext); // Usa login en lugar de setUser
   const navigate = useNavigate();
+  const clearCart = () => setCartItems([]);
 
   useEffect(() => {
     console.log(`Usuario conectado: ${user ? user.name : 'Ninguno'}`);
@@ -60,12 +63,12 @@ const App = () => {
 
   const handleLogout = () => {
     login(null); // Usa login para manejar el cierre de sesión
-    navigate('/login');
+    navigate('/');
   };
 
   return (
 <UserContext.Provider value={{ user, login }}>
-    <CartContext.Provider value={{ cartItems, setCartItems }}> {/* Proveer el contexto del carrito */}
+    <CartContext.Provider value={{ cartItems, setCartItems, clearCart }}> {/* Proveer el contexto del carrito */}
     <Body>
       <Navbar>
         <NavButton onClick={() => handleNavButtonClick('main')}>Main</NavButton>
