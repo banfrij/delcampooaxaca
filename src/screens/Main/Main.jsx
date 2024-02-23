@@ -1,8 +1,12 @@
 // Main.jsx
-// Main.jsx
+
 import React, { useContext, useState, useEffect  } from 'react';
 import { CartContext } from '../Order/CartContext.jsx';
-import { FaSearch, FaApple, FaAppleAlt, FaCarrot, FaBacon, FaLemon, FaCircle, FaPepperHot, FaLeaf } from 'react-icons/fa';
+import { collection, getDocs, orderBy, query } from 'firebase/firestore';
+import { db } from '../../../firebase.js'
+
+
+import { FaSearch} from 'react-icons/fa';
 import styled from 'styled-components'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -71,7 +75,7 @@ const ProductGrid = styled.div`
 export default function Main() {
   const { setCartItems } = useContext(CartContext); // Usa setCartItems en lugar de setCart
   const [message, setMessage] = useState(''); // Nuevo estado para el mensaje
-  // ...resto del código...
+  const [productList, setProductList] = useState([]); // Nuevo estado para la lista de productos
 
   useEffect(() => {
     if (message) {
@@ -79,17 +83,17 @@ export default function Main() {
     }
   }, [message]);
 
-  const productList = [
-    { name: 'Manzana', description: 'Fruta fresca', price: 2.5, unit: 'kilo', icon: FaApple },
-    { name: 'Plátano', description: 'Fruta tropical', price: 1.5, unit: 'kilo', icon: FaBacon },
-    { name: 'Zanahoria', description: 'Verdura crujiente', price: 1.0, unit: 'kilo', icon: FaCarrot },
-    { name: 'Tomate', description: 'Fruta roja', price: 2.0, unit: 'kilo', icon: FaAppleAlt },
-    { name: 'Limón', description: 'Fruta cítrica', price: 1.5, unit: 'kilo', icon: FaLemon },
-    { name: 'Naranja', description: 'Fruta cítrica', price: 2.0, unit: 'kilo', icon: FaCircle },
-    { name: 'Pimiento', description: 'Verdura picante', price: 1.5, unit: 'kilo', icon: FaPepperHot },
-    { name: 'Lechuga', description: 'Verdura fresca', price: 1.0, unit: 'kilo', icon: FaLeaf },
-  ];
+  useEffect(() => {
+    const getProducts = async () => {
+      const productsCollection = collection(db, 'products');
+      const q = query (productsCollection, orderBy("name"))
+      const productSnapshot = await getDocs(q);
+      const productList = productSnapshot.docs.map(doc => doc.data());
+      setProductList(productList); // Actualiza el estado con los productos obtenidos
+    };
 
+    getProducts(); // Llama a la función cuando el componente se monta
+  }, []);
   
 const handleAddToCart = (product) => {
   const quantity = window.prompt('¿Cuántos quieres agregar al carrito?');
@@ -120,7 +124,6 @@ const handleAddToCart = (product) => {
         {/* Product list */}
         {productList.map((product, index) => (
           <ProductCard key={index}>
-            <product.icon style={{ marginRight: '1rem', fontSize: '2rem' }} />
             <div>
               <h3>{product.name}</h3>
               <p>{product.description}</p>
